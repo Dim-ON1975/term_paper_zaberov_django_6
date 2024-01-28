@@ -1,0 +1,15 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Выход из системы{% endblock %}
+
+{% block context %}
+    <section class="py-0 pb-4 text-center container">
+        <div class="row py-lg-2">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-middle">Выход из системы</h1>
+                <p class="lead text-body-secondary">Вы успешно вышли из системы.
+                    Можно выполнить <a href="{% url 'login' %}">повторный вход</a>.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
