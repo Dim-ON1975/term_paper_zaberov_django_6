@@ -172,9 +172,9 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL_YANDEX')
 EMAIL_ADMIN = EMAIL_HOST_USER
 
 # Авторизация и аутентификация
-LOGIN_REDIRECT_URL = 'dashboard'  # перенаправить сюда после успешного входа
-LOGIN_URL = 'login'  # адрес регистрации входа
-LOGOUT_URL = 'logout'  # адрес регистрации выхода
+LOGIN_REDIRECT_URL = 'account:dashboard'  # перенаправить сюда после успешного входа
+LOGIN_URL = 'account:login'  # адрес регистрации входа
+LOGOUT_URL = 'account:logout'  # адрес регистрации выхода
 
 # Аутентификация при помощи пользовательского имени, пароля и электронной почты (написан самостоятельно)
 AUTHENTICATION_BACKENDS = [

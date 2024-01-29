@@ -1,6 +1,10 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, DeleteView
+
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
@@ -91,3 +95,12 @@ def edit(request):
                   'account/edit.html',
                   {'user_form': user_form,
                    'profile_form': profile_form})
+
+
+class ProfileDetailView(DetailView):
+    model = Profile
+
+
+class UserDeleteView(DeleteView):
+    model = User
+    success_url = reverse_lazy('account:dashboard')

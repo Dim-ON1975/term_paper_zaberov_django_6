@@ -18,11 +18,11 @@
                 <img src="{% mediapath user.profile.photo %}" alt="mdo" style="width: 32px; height: 32px;" class="rounded-circle">
               </a>
               <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a class="dropdown-item" href="{% url 'edit' %}">Редактировать профиль</a></li>
-                <li><a class="dropdown-item" href="{% url 'password_change' %}">Сменить пароль</a></li>
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:edit' %}">Редактировать профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:password_change' %}">Сменить пароль</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:profile' user.profile.pk %}">Профиль</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Выйти</a></li>
               </ul>
             </div>
         {% endif %}
@@ -32,7 +32,7 @@
 <nav class="py-2 mb-4 border-bottom" style="background-color: #d7e0eb;">
     <div class="container d-flex flex-wrap">
       <ul class="nav me-auto">
-        <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link link-dark px-2 active" aria-current="page">Главная</a></li>
+        <li class="nav-item"><a href="{% url 'account:dashboard' %}" class="nav-link link-dark px-2 active" aria-current="page">Главная</a></li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Клиенты</a>
@@ -58,8 +58,8 @@
         {% if request.user.is_authenticated %}
             <li class="nav-item nav-link link-dark px-2" style="margin-top: 1.5px;">Здравствуйте, {{ request.user.first_name|default:request.user.username }}</li>
         {% else %}
-            <li class="nav-item"><a href="{% url 'login' %}" class="nav-link link-dark px-2">Войти</a></li>
-            <li class="nav-item"><a href="{% url 'register' %}" class="nav-link link-dark px-2">Зарегистрироваться</a></li>
+            <li class="nav-item"><a href="{% url 'account:login' %}" class="nav-link link-dark px-2">Войти</a></li>
+            <li class="nav-item"><a href="{% url 'account:register' %}" class="nav-link link-dark px-2">Зарегистрироваться</a></li>
         {% endif %}
         <li>
             <svg id="specialButton" style="cursor:pointer; margin-top: 6px;" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#027dc5" class="bi bi-eyeglasses" viewBox="0 0 16 16"><title>Версия для слабовидящих</title>
