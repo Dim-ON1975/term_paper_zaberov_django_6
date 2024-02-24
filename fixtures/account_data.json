@@ -1,0 +1,46 @@
+[
+{
+    "model": "account.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$kBpT0UQj5bmicdJLlXxOrU$R51AZdRGzkB040tJ/iDBJx/mVL4SCQPZDbmn5Rtff64=",
+        "last_login": "2024-02-24T14:47:17.191Z",
+        "is_superuser": true,
+        "first_name": "Дмитрий",
+        "last_name": "Заберов",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-02-24T11:02:22Z",
+        "email": "zaberov.dv@internet.ru",
+        "email_verify": true,
+        "date_of_birth": "1975-07-18",
+        "avatar": "users/2024/02/24/1662642122_5-kartinkin-net.jpg",
+        "phone": "+79198784504",
+        "country": "Россия",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$wXUainKNF9O050a20D0aB3$qFV+vUAGz6sdOyclMM5wJyeyVKuXh8bjh4C24pyOS/k=",
+        "last_login": "2024-02-24T14:06:45.025Z",
+        "is_superuser": false,
+        "first_name": "Иван",
+        "last_name": "Иванов",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-02-24T13:03:29.435Z",
+        "email": "zaberov.dv@gmail.com",
+        "email_verify": true,
+        "date_of_birth": null,
+        "avatar": "",
+        "phone": null,
+        "country": "Россия",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

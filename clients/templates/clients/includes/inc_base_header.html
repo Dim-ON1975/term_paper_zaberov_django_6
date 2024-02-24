@@ -1,0 +1,83 @@
+{% load static %}
+{% load catalog_tags %}
+<header class="py-3 border-bottom">
+    <div class="container d-flex flex-wrap justify-content-center">
+      <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="#ec6f0e" class="bi me-2" viewBox="0 0 16 16">
+          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+        </svg>
+        <span class="fs-4" style="color: #2e5e45; font-weight: bold;">Мой сайт</span>
+      </a>
+      <div class="d-flex align-items-center">
+        <form class="w-100 me-3">
+          <input type="search" class="form-control" placeholder="Поиск..." aria-label="Search">
+        </form>
+        {% if request.user.is_authenticated %}
+            <div class="flex-shrink-0 dropdown">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.avatar %}
+                  <img src="{% mediapath user.avatar %}" alt="mdo" style="width: 32px; height: 32px;" class="rounded-circle">
+                {% else %}
+                  <img src="{% static 'img/default_avatar.png' %}" alt="mdo" style="width: 32px; height: 32px;" class="rounded-circle">
+                {% endif %}
+              </a>
+              <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                <li><a class="dropdown-item" href="{% url 'account:update_profile' %}">Редактировать профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:password_change' %}">Сменить пароль</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:profile' %}">Профиль</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Выйти</a></li>
+              </ul>
+            </div>
+        {% endif %}
+      </div>
+    </div>
+</header>
+<nav class="py-2 mb-4 border-bottom" style="background-color: #d7e0eb;">
+    <div class="container d-flex flex-wrap">
+      <ul class="nav me-auto">
+        <li class="nav-item"><a href="{% url 'clients:home' %}" class="nav-link link-dark px-2 active" aria-current="page">Главная</a></li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Клиенты</a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                        <li><a class="dropdown-item" href="{% url 'clients:client_list' %}">Список клиентов</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:client_create' %}">Добавить клиента</a></li>
+                      </ul>
+                </li>
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                        <li><a class="dropdown-item" href="#">Список рассылок</a></li>
+                        <li><a class="dropdown-item" href="#">Добавить рассылку</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Отчёт о рассылках</a></li>
+                      </ul>
+                </li>
+            {% endif %}
+        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">О нас</a></li>
+        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Контакты</a></li>
+      </ul>
+      <ul class="nav">
+        {% if request.user.is_authenticated %}
+            <li class="nav-item nav-link link-dark px-2" style="margin-top: 1.5px;">Здравствуйте, {{ request.user.first_name|default:request.user.username }}</li>
+        {% else %}
+            <li class="nav-item"><a href="{% url 'account:login' %}" class="nav-link link-dark px-2">Войти</a></li>
+            <li class="nav-item"><a href="{% url 'account:register' %}" class="nav-link link-dark px-2">Зарегистрироваться</a></li>
+        {% endif %}
+        <li>
+            <svg id="specialButton" style="cursor:pointer; margin-top: 6px;" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#027dc5" class="bi bi-eyeglasses" viewBox="0 0 16 16"><title>Версия для слабовидящих</title>
+              <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A1.993 1.993 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+            </svg>
+        </li>
+      </ul>
+    </div>
+</nav>
+{% if messages %}
+    {% for message in messages %}
+        <div class="mx-auto col-3 alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+          <strong>{{ message|safe }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}

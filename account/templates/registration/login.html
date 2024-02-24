@@ -1,0 +1,35 @@
+{% extends 'clients/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+              <h1 class="fw-middle">Авторизация</h1>
+              {% if form.errors %}
+                <p class="lead text-body-secondary">Ваше имя пользователя и пароль не совпали. Пожалуйста, попробуйте еще раз.</p>
+              {% else %}
+                <p class="lead text-body-secondary">Пожалуйста, используйте следующую форму для входа.<br>
+                Если у Вас нет учетной записи, то <a href="{% url 'account:register' %}" style="text-decoration: none;">зарегистрируйтесь здесь</a>.</p>
+              {% endif %}
+          </div>
+        </div>
+    </section>
+    <div class="py-5" style="background-color: #f8f8f6;">
+        <div class="container" style="width: 40%;">
+            <form action="{% url 'account:login' %}" method="post" class="mb-3">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="form-actions">
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <input type="submit"  class="btn btn-success" value="Авторизоваться">
+                 </div>
+            </form>
+            <p class="lead text-body-secondary" style="font-size: 1em;">
+                <a href="{% url 'account:password_reset' %}" class="link-success" style="text-decoration: none;">Забыли пароль?</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

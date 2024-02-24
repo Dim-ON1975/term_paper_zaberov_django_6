@@ -1,0 +1,33 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Удаление клиента{% endblock %}
+
+{% block context %}
+<section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Удаление клиента</h1>
+        <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
+      </div>
+    </div>
+</section>
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-0">
+                <div class="col">
+                    <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                        <img src="{{ product.img|mediapath }}" class="card-img-right flex-auto d-none d-md-block" alt="{{ product.name }}" style="width: auto; max-height: 180px; padding: 10px">
+                        <div class="card-body d-flex flex-column align-items-start">
+                          <h3 class="mb-0 text-dark">Хотите удалить клиента "{{ object.__str__ }}"?</h3>
+                          <form method="post" style="margin-top: 10px;">
+                              {% csrf_token %}
+                              <button type="submit"  class="btn btn-danger">Удалить</button>
+                              <a class="btn btn btn-success" href="{% url 'mailings:mailing_list' %}">Отмена</a>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
