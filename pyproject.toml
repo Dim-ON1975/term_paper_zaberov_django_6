@@ -17,6 +17,7 @@ django-forms-bootstrap = "^3.1.0"
 pytils = "^0.4.1"
 django-apscheduler = "^0.6.2"
 django-crispy-forms = "^2.1"
+redis = "^5.0.1"
 
 
 [build-system]

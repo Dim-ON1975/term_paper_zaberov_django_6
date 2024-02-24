@@ -22,7 +22,7 @@ from mailings import jobs
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clients/', include('clients.urls')),
+    path('', include('clients.urls')),
     # path('mailings/', include('mailings.urls')),
     path('account/', include('account.urls')),
 ]

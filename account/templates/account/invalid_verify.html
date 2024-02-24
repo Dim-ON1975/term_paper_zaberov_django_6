@@ -1,0 +1,26 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Ссылка недействительна{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-middle">Подтверждение электронной почты</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="py-5" style="background-color: #f8f8f6;">
+        <div class="container text-center">
+            <div class="row mb-0 mx-auto">
+                <div class="col">
+                    <p class="lead text-body-secondary">Ссылка для регистрации недействительна,
+                        возможно, потому, что она уже была использована.<br>
+                        Пожалуйста, попробуйте <a href="{% url 'account:login' %}">войти</a> в свою учётную запись.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

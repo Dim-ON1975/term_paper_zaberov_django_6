@@ -1,66 +1,57 @@
 from django import forms
-from django.contrib.auth.models import User
+from account.models import User
 
-from account.models import Profile
-
-
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+from account.services import send_email_for_verify
+from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm as DjangoAuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth import authenticate
 
 
-class UserRegistrationForm(forms.ModelForm):
-    """
-    Модельная форма для модели пользователя при его регистрации.
-    """
-    password = forms.CharField(label="Пароль", widget=forms.PasswordInput)  # Установить пароль
-    password2 = forms.CharField(label="Повторите пароль", widget=forms.PasswordInput)  # Подтвердить пароль
+class AuthenticationForm(DjangoAuthenticationForm):
+    """ Форма аутентификации пользователя с проверкой верификации почты"""
 
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username is not None and password:
+            self.user_cache = authenticate(
+                self.request,
+                username=username,
+                password=password,
+            )
+
+            # Если такого пользователя не существует
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+            # Если электронная почта не верифицирована
+            if not self.user_cache.email_verify:
+                # Отправляем письмо, содержащее ссылку для верификации
+                send_email_for_verify(self.request, self.user_cache)
+                # Выводим сообщение
+                raise ValidationError(
+                    'Электронная почта не верифицирована. Ссылка для верификации выслана по email.',
+                    code='invalid_login',
+                )
+
+        return self.cleaned_data
+
+
+class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email',)
-
-    def clean_password2(self):
-        """
-        Валидация полей формы, проверяющая, что оба пароля одинаковые.
-        Выдаёт ошибку валидации, если пароли не совпадают.
-        """
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Пароли не совпадают')
-        return cd['password2']
-
-    def clean_email(self):
-        """
-        Не позволяет пользователям регистрироваться
-        с одинаковым адресом электронной почты.
-        """
-        data = self.cleaned_data['email']
-        if User.objects.filter(email=data).exists():
-            raise forms.ValidationError('Пользователь с таким email уже зарегистрирован')
-        return data
+        fields = ('email', 'password1', 'password2',)
 
 
-class UserEditForm(forms.ModelForm):
-    """
-    Форма редактирования имени, фамилии и адреса электронной почты.
-    """
+class UserProfileForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('first_name', 'last_name', 'country', 'email', 'phone', 'date_of_birth', 'avatar',)
 
-    def clean_email(self):
-        data = self.cleaned_data['email']
-        qs = User.objects.exclude(id=self.instance.id).filter(email=data)
-        if qs.exists():
-            raise forms.ValidationError('Этот email уже используется.')
-        return data
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-
-class ProfileEditForm(forms.ModelForm):
-    """
-    Форма редактирования даты рождения и фотографии.
-    """
-    class Meta:
-        model = Profile
-        fields = ('date_of_birth', 'photo',)
+        self.fields['password'].widget = forms.HiddenInput()

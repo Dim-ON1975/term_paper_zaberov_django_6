@@ -15,7 +15,7 @@
     <div class="py-5" style="background-color: #f8f8f6;">
         <div class="container" style="width: 40%;">
             <form method="post" class="mb-3">
-                {{ user_form|crispy }}
+                {{ form|crispy }}
                 {% csrf_token %}
                 <div class="form-actions">
                     <input type="submit"  class="btn btn-success" value="Зарегистрироваться">

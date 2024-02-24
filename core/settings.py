@@ -20,8 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+# переменные окружения в файле .env
+load_dotenv(find_dotenv())
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i-pig649n!+$&1*%k_)_tf(qqrtr#zoyz!4dirkt!o=3^e7d%d'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,7 +34,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'account.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
 
     # мои приложения
     'clients',
+    'account',
     # 'mailings',
 
     # формы бутстрап
@@ -95,12 +98,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'termpaper6',
-        'USER': 'postgres',
-        'PASSWORD': '000000',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': os.getenv('ENGINE'),
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
     }
 }
 
@@ -154,8 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ЭЛЕКТРОННАЯ ПОЧТА
 
-# переменные окружения в файле .env
-load_dotenv(find_dotenv())
+
 
 # настройки работы почтой
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -172,12 +174,20 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL_YANDEX')
 EMAIL_ADMIN = EMAIL_HOST_USER
 
 # Авторизация и аутентификация
-LOGIN_REDIRECT_URL = 'account:dashboard'  # перенаправить сюда после успешного входа
+AUTH_USER_MODEL = 'account.User'
+LOGIN_REDIRECT_URL = 'clients:home'  # перенаправить сюда после успешного входа
+LOGOUT_REDIRECT_URL = 'clients:home'
 LOGIN_URL = 'account:login'  # адрес регистрации входа
 LOGOUT_URL = 'account:logout'  # адрес регистрации выхода
 
-# Аутентификация при помощи пользовательского имени, пароля и электронной почты (написан самостоятельно)
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'account.authentication.EmailAuthBackend',
-]
+# КЕШИРОВАНИЕ ДАННЫХ
+CACHE_ENABLED = True
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": os.getenv('BACKEND'),
+            "LOCATION": os.getenv('LOCATION'),
+            "TIMEOUT": 60
+        }
+    }

@@ -1,39 +1,46 @@
-from django.contrib.auth.models import User
+from account.models import User
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, DeleteView
+from django.views.generic import DeleteView, CreateView, View, UpdateView, DetailView
 
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import AuthenticationForm, UserRegisterForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+
 from django.contrib import messages
+from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView, PasswordResetView, \
+    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from core.settings import LOGIN_REDIRECT_URL
+from .services import send_email_for_verify
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.core.exceptions import ValidationError
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-def user_login(request):
-    if request.method == 'POST':
-        # POST-запрос: обработка заполненной формы
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            # аутентификация: возвращается объект "user"
-            user = authenticate(request,
-                                username=cd['username'],
-                                password=cd['password'])
-            if user is not None:
-                # если user существует, то проверяется его активность
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponse('Аутентификация прошла успешно')
-                else:
-                    return HttpResponse('Отключенная учетная запись')
-        else:
-            return HttpResponse('Неверный логин')
-    else:
-        # GET-запрос: новая пустая форма
-        form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+class MyLoginView(LoginView):
+    """Авторизация"""
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        form.save()
+        cd = form.cleaned_data
+        # аутентификация: возвращается объект "user"
+        user = authenticate(self.request,
+                            username=cd['username'],
+                            password=cd['password'])
+        if user is not None:
+            # если user существует, то проверяется его активность
+            if user.is_active:
+                login(self.request, user)
+                return HttpResponse('Аутентификация прошла успешно')
+            else:
+                return HttpResponse('Отключенная учетная запись')
+        return redirect(LOGIN_REDIRECT_URL)
+
+    def form_invalid(self, form):
+        return HttpResponse('Неверный логин')
 
 
 @login_required
@@ -43,64 +50,103 @@ def dashboard(request):
                   {'section': 'dashboard'})
 
 
-def register(request):
-    """
-    Регистрация пользователя.
-    :param request: Объект, хранящий информацию о запросе, object.
-    :return: HTML-страницы 'account/register_done.html' или 'account/register.html'
-    """
-    if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
-            # Создать новый объект пользователя,
-            # но пока не сохранять его
-            new_user = user_form.save(commit=False)
-            # Установить выбранный пароль: хеширование при помощи .set_password
-            new_user.set_password(user_form.cleaned_data['password'])
-            # Сохранить объект User
-            new_user.save()
-            # Создать профиль пользователя
-            Profile.objects.create(user=new_user)
-            return render(request,
-                          'account/register_done.html',
-                          {'new_user': new_user})
-    else:
-        user_form = UserRegistrationForm()
-    return render(request,
-                  'account/register.html',
-                  {'user_form': user_form})
-
-
-@login_required
-def edit(request):
-    """
-    Редактирование пользователями личной информации.
-    :param request: Объект, хранящий информацию о запросе, object.
-    :return: HTML-страница 'account/edit.html'
-    """
-    if request.method == 'POST':
-        user_form = UserEditForm(instance=request.user, data=request.POST)
-        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            # Сообщения для пользователя
-            messages.success(request, 'Профиль обновлён успешно')
-        else:
-            messages.error(request, 'Ошибка при обновлении профиля')
-    else:
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
-    return render(request,
-                  'account/edit.html',
-                  {'user_form': user_form,
-                   'profile_form': profile_form})
-
-
-class ProfileDetailView(DetailView):
-    model = Profile
-
-
-class UserDeleteView(DeleteView):
+class RegisterView(CreateView):
+    """Регистрация"""
     model = User
-    success_url = reverse_lazy('account:dashboard')
+    form_class = UserRegisterForm
+    template_name = 'account/register.html'
+
+    def form_valid(self, form):
+        form.save()
+        user = authenticate(
+            email=form.cleaned_data.get('email'),
+            password=form.cleaned_data.get('password1')
+        )
+        send_email_for_verify(self.request, user)
+        return redirect('account:confirm_email')
+
+
+class EmailVerify(View):
+    """Верификация почты при регистрации"""
+
+    def get(self, request, uidb64, token):
+        user = self.get_user(uidb64)
+
+        if user is not None and token_generator.check_token(user, token):
+            user.email_verify = True
+            user.save()
+            login(request, user)
+            return redirect('clients:home')
+        return redirect('account:invalid_verify')
+
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            # urlsafe_base64_decode() декодирует в байт-строку
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (
+                TypeError,
+                ValueError,
+                OverflowError,
+                User.DoesNotExist,
+                ValidationError,
+        ):
+            user = None
+        return user
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    """Редактирование профиля"""
+    model = User
+    form_class = UserProfileForm
+    success_url = reverse_lazy('account:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    """Просмотр профиля"""
+    model = User
+    success_url = reverse_lazy('account:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    """Удаление пользователя"""
+    model = User
+    success_url = reverse_lazy('account:login')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    success_url = reverse_lazy("account:password_change_done")
+    template_name = "account/password_change_form.html"
+
+
+class MyPasswordChangeDoneView(LoginRequiredMixin, PasswordChangeDoneView):
+    template_name = "account/password_change_done.html"
+
+
+class MyPasswordResetView(PasswordResetView):
+    email_template_name = "account/password_reset_email.html"
+    success_url = reverse_lazy("account:password_reset_done")
+    template_name = "account/password_reset_form.html"
+
+
+class MyPasswordResetDoneView(PasswordResetDoneView):
+    template_name = "account/password_reset_done.html"
+
+
+class MyPasswordResetConfirmView(PasswordResetConfirmView):
+    success_url = reverse_lazy("account:password_reset_complete")
+    template_name = "account/password_reset_confirm.html"
+
+
+class MyPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "account/password_reset_complete.html"

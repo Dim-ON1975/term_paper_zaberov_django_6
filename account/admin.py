@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Profile
+from account.models import User
 
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user', 'date_of_birth', 'photo',)
-    raw_id_fields = ('user',)
-    list_filter = ('user', 'date_of_birth',)
-    search_fields = ('user',)
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+        'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'is_superuser',
+        'email_verify',)
+    list_filter = ('email', 'email_verify', 'is_staff', 'is_active', 'is_superuser',)
+    search_fields = ('first_name', 'last_name', 'email',)
