@@ -1,0 +1,35 @@
+{% extends 'clients/base.html' %}
+{% load catalog_tags %}
+
+{% block title %}Письмо{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Информация о письме</h1>
+          </div>
+        </div>
+    </section>
+    {% if request.user.is_authenticated %}
+        <div class="py-5 bg-light">
+            <div class="container">
+                <div class="row mb-0">
+                        <div class="col">
+                            <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                                <div class="card-body d-flex flex-column align-items-start">
+                                  <h3 class="mb-0 text-primary">{{ message.mail_title }}</h3>
+                                  <br>
+                                  <p class="card-text mb-auto">{{ message.mail_text }}</p>
+                                  <br>
+                                  <a href="{% url 'mailings:message_list' %}">Вернуться назад</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include 'clients/includes/inc_base_cap.html' %}
+    {% endif %}
+{% endblock %}

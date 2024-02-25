@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class MailingConfig(AppConfig):
+class LogsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mailings'
-    verbose_name = 'рассылки'
+    name = 'logs'
+    verbose_name = 'логи'

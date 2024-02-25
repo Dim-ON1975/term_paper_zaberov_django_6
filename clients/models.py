@@ -23,18 +23,4 @@ class Client(models.Model):
         verbose_name_plural = 'клиенты'
         ordering = ('last_name', 'first_name',)
 
-# class Recipient(models.Model):
-#     creator = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='владелец')
-#     recipients = models.ManyToManyField(Client, verbose_name='получатель')
-#
-#     class Meta:
-#         verbose_name = 'получатель'
-#         verbose_name_plural = 'получатели'
-#
-#
-# class Message(models.Model):
-#     creator = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='владелец')
-#
-#
-# class Logs(models.Model):
-#     mailings = models.ForeignKey(Mailings, on_delete=models.CASCADE, verbose_name='рассылка')
+

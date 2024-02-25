@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     # мои приложения
     'clients',
     'account',
-    # 'mailings',
+    'mailings',
+    'logs',
 
     # формы бутстрап
     'crispy_bootstrap5',

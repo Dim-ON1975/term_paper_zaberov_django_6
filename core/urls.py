@@ -23,8 +23,9 @@ from mailings import jobs
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('clients.urls')),
-    # path('mailings/', include('mailings.urls')),
+    path('mailings/', include('mailings.urls')),
     path('account/', include('account.urls')),
+    # path('logs/', include('logs.urls')),
 ]
 
 if settings.DEBUG:
