@@ -1,0 +1,55 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Удаление рассылки{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-middle">Удаление рассылки</h1>
+            <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
+          </div>
+        </div>
+    </section>
+    {% if request.user.is_authenticated %}
+        <div class="py-5" style="background-color: #f8f8f6;">
+            <div class="container">
+                <div class="row mb-0">
+                        <div class="col">
+                            <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                                <div class="card-body d-flex flex-column align-items-start">
+                                  <h3 class="mb-0 text-dark">Хотите удалить рассылку?</h3>
+                                  <br>
+                                  <p><b>Создал:</b> {{ object.creator }}</p>
+                                  <p><b>Параметры рассылки:</b>
+                                      {% if object.mailings.mailing_day == 0%}
+                                            от даты создания,
+                                      {% else %}
+                                            {{ object.mailings.mailing_day }}-го,
+                                      {% endif %}
+                                      {{ object.mailings.mailing_hour }}:{{ object.mailings.mailing_minute }}:{{ object.mailings.mailing_second }}, {{ object.mailings.mailing_frequency }} дн., {{ object.mailings.mailing_status }}
+                                  </p>
+                                  <p><b>Получатели:</b>
+                                      <ul>
+                                          {% for recipient in object.recipients.all  %}
+                                            <li>{{ recipient.last_name }} {{ recipient.first_name|slice:1 }}.: {{ recipient.email }}</li>
+                                          {% endfor %}
+                                      </ul>
+                                  </p>
+                                  <p><b>Тема письма:</b> {{ object.message.mail_title }}</p>
+                                  <p><b>Содержание письма:</b> {{ object.message.mail_text }}</p>
+                                  <form method="post" style="margin-top: 10px;">
+                                      {% csrf_token %}
+                                      <button type="submit"  class="btn btn-danger">Удалить</button>
+                                      <a class="btn btn btn-success" href="{% url 'mailings:recipient_list' %}">Отмена</a>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include 'clients/includes/inc_base_cap.html' %}
+    {% endif %}
+{% endblock %}

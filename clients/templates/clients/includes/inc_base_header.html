@@ -48,8 +48,11 @@
                 <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
                       <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                        <li><a class="dropdown-item" href="{% url 'mailings:mailing_list' %}">Список рассылок</a></li>
-                        <li><a class="dropdown-item" href="{% url 'mailings:mailing_create' %}">Добавить рассылку</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mailings:recipient_list' %}">Список рассылок</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mailings:recipient_create' %}">Добавить рассылку</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'mailings:mailing_list' %}">Список параметров рассылки</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mailings:mailing_create' %}">Добавить параметр рассылки</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'mailings:message_list' %}">Список писем</a></li>
                         <li><a class="dropdown-item" href="{% url 'mailings:message_create' %}">Добавить письмо</a></li>

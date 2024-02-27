@@ -7,8 +7,8 @@
   <section class="py-0 text-center container">
     <div class="row py-lg-2">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-middle">Список рассылок</h1>
-        <p class="lead text-body-secondary">Просмотр, редактирование и удаление рассылок</p>
+        <h1 class="fw-middle">Список параметров рассылки</h1>
+        <p class="lead text-body-secondary">Просмотр, редактирование и удаление параметров рассылки</p>
       </div>
     </div>
   </section>
@@ -23,7 +23,14 @@
                                     {% for object in object_list %}
                                         <tr class="border-top">
                                             <td class="text-start" style="width: 15%">{{ user.last_name }} {{ user.first_name|slice:1 }}.</td>
-                                            <td class="text-start">{{ object }}</td>
+                                            <td class="text-start">
+                                                {% if object.mailing_day == 0%}
+                                                    старт: от даты создания,
+                                                {% else %}
+                                                    старт: {{ object.mailing_day }}-го,
+                                                {% endif %}
+                                                {{ object.mailing_hour }}:{{ object.mailing_minute }}:{{ object.mailing_second }}, {{ object.mailing_frequency }} дн., {{ object.mailing_status }}
+                                            </td>
                                             <td>
                                                 <div class="btn-group" style="float: center; margin: 0;">
                                                   <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailings:mailing_update' object.pk %}" role="button">

@@ -10,6 +10,10 @@ class Client(models.Model):
     email = models.EmailField(verbose_name='электронная почта')
     comment = models.CharField(max_length=200, **NULLABLE, verbose_name='комментарий')
 
+    def natural_key(self):
+        """Для сериализации связанных данных"""
+        return self.email
+
     def __str__(self):
         if self.middle_name:
             full_name = f'{str(self.last_name)} {str(self.first_name)} {str(self.middle_name)[0]}.'.title()
@@ -22,5 +26,3 @@ class Client(models.Model):
         verbose_name = 'клиент'
         verbose_name_plural = 'клиенты'
         ordering = ('last_name', 'first_name',)
-
-
