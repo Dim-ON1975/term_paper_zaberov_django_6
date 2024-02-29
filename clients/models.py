@@ -1,9 +1,11 @@
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
+MODEL_USER = 'account.User'
 
 
 class Client(models.Model):
+    creator = models.ForeignKey(MODEL_USER, default=1, on_delete=models.CASCADE, verbose_name='владелец')
     last_name = models.CharField(max_length=20, verbose_name='фамилия')
     first_name = models.CharField(max_length=20, verbose_name='имя')
     middle_name = models.CharField(max_length=20, **NULLABLE, verbose_name='отчество')

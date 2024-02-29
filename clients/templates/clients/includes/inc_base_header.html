@@ -45,9 +45,17 @@
                         <li><a class="dropdown-item" href="{% url 'clients:client_create' %}">Добавить клиента</a></li>
                       </ul>
                 </li>
+                {% if perms.account.view_user or user.is_superuser %}
                 <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
+                    <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Пользователи</a>
                       <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                            <li><a class="dropdown-item" href="{% url 'account:user_list' %}">Список пользователей</a></li>
+                      </ul>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdown03">
                         <li><a class="dropdown-item" href="{% url 'mailings:recipient_list' %}">Список рассылок</a></li>
                         <li><a class="dropdown-item" href="{% url 'mailings:recipient_create' %}">Добавить рассылку</a></li>
                         <li><hr class="dropdown-divider"></li>

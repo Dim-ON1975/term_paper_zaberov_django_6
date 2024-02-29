@@ -1,0 +1,72 @@
+[
+{
+    "model": "account.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$1xgta8xQchjsCnRPXvbAHA$BWhiInwA+nC/Xz7qRYVCP7uM/geEb0VVbKiApu3pRzI=",
+        "last_login": "2024-02-29T19:01:49.243Z",
+        "is_superuser": true,
+        "first_name": "Дмитрий",
+        "last_name": "Заберов",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-02-25T13:07:27Z",
+        "email": "zaberov.dv@internet.ru",
+        "email_verify": true,
+        "date_of_birth": "1975-07-18",
+        "avatar": "users/2024/02/25/1662642122_5-kartinkin-net.jpg",
+        "phone": "+7 951 258-25-54",
+        "country": "Россия",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$Ns6lGnIzwBYrXxmGwE63E0$zAZD8VMIE8M9qhyFwTEMmcig2gycA5utTeYwXCGCGlM=",
+        "last_login": "2024-02-29T19:02:45.317Z",
+        "is_superuser": false,
+        "first_name": "Иван",
+        "last_name": "Иванов",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-02-28T17:28:45Z",
+        "email": "zaberov.dv@gmail.com",
+        "email_verify": true,
+        "date_of_birth": "1993-09-15",
+        "avatar": "users/2024/02/28/1662642079_4-kartinkin-net.jpg",
+        "phone": "+7 598 125- 12-35",
+        "country": "Россия",
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$D4KHkZQXfulQ7FUwrZPQD2$NGnYhplB5gyvq4vUfkE/h/VPpFXwPkun1XpK9b0qOTg=",
+        "last_login": "2024-02-29T18:58:43.041Z",
+        "is_superuser": false,
+        "first_name": "Кирилл",
+        "last_name": "Пухляков",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-02-29T10:57:01Z",
+        "email": "kira.puh75@yandex.ru",
+        "email_verify": true,
+        "date_of_birth": "2008-06-15",
+        "avatar": "users/2024/02/29/1662642172_2-kartinkin-net-p-risunok-na-avatarku-dlya-muzhchin-instagra-2.jpg",
+        "phone": "+7 251 958-58-58",
+        "country": "Россия",
+        "groups": [
+            3
+        ],
+        "user_permissions": []
+    }
+}
+]

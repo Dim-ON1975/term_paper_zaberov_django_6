@@ -3,15 +3,15 @@
 {% block title %}Удаление параметра{% endblock %}
 
 {% block context %}
-<section class="py-0 text-center container">
-    <div class="row py-lg-2">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-middle">Удаление параметра рассылки</h1>
-        <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
-      </div>
-    </div>
-</section>
-    {% if request.user.is_authenticated %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-middle">Удаление параметра рассылки</h1>
+            <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
+          </div>
+        </div>
+    </section>
+    {% if mailing.creator == user or user.is_superuser %}
         <div class="py-5" style="background-color: #f8f8f6;">
             <div class="container">
                 <div class="row mb-0">
@@ -25,7 +25,7 @@
                                       {% else %}
                                             старт: {{ object.mailing_day }}-го,
                                       {% endif %}
-                                      {{ object.mailing_hour }}:{{ object.mailing_minute }}:{{ object.mailing_second }}, {{ object.mailing_frequency }} дн., {{ object.mailing_status }}
+                                      {{ object.mailing_hour }}:{{ object.mailing_minute }}:{{ object.mailing_second }}, {{ object.mailing_frequency }} дн.
                                   </h4>
                                   <form method="post" style="margin-top: 10px;">
                                       {% csrf_token %}

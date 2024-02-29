@@ -11,7 +11,7 @@
           </div>
         </div>
     </section>
-    {% if request.user.is_authenticated %}
+    {% if perms.mailings.view_recipient or recipient.creator == user %}
         <div class="py-5 bg-light">
             <div class="container">
                 <div class="row mb-0">
@@ -30,7 +30,7 @@
                                       {% else %}
                                             {{ object.mailings.mailing_day }}-го,
                                       {% endif %}
-                                      {{ object.mailings.mailing_hour }}:{{ object.mailings.mailing_minute }}:{{ object.mailings.mailing_second }}, {{ object.mailings.mailing_frequency }} дн., {{ object.mailings.mailing_status }}
+                                      {{ object.mailings.mailing_hour }}:{{ object.mailings.mailing_minute }}:{{ object.mailings.mailing_second }}, {{ object.mailings.mailing_frequency }} дн., {{ object.mailing_status }}
                                   </h5>
                                   <br>
                                   <p class="card-text mb-auto">{{ recipient.message.mail_text }}</p>

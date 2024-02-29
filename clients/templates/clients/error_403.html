@@ -1,0 +1,29 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Домашняя страница{% endblock %}
+
+{% block context %}
+<main>
+  <section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col mx-auto">
+        <h1 class="fw-middle">ОШИБКА 403</h1>
+            <p class="lead text-body-secondary">Страница недоступна</p>
+        {% if request.user.is_authenticated %}
+        {% else %}
+          {% include 'clients/includes/inc_base_cap.html' %}
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
+
+  <div class="py-5" style="background-color: #f8f8f6;">
+    <div class="container">
+        <div class="row text-center">
+            <p>У ВАС НЕДОСТАТОЧНО ПРАВ ДЛЯ ВЫПОЛНЕНИЯ ВЫБРАННОГО ДЕЙСТВИЯ. ДЛЯ ПОЛУЧЕНИЯ ДОПОЛНИТЕЛЬНЫХ ПРАВ ОБРАТИТЕСЬ К АДМИНИСТРАТОРУ.</p>
+        </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

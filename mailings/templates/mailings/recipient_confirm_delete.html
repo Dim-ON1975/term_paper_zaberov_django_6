@@ -11,7 +11,7 @@
           </div>
         </div>
     </section>
-    {% if request.user.is_authenticated %}
+    {% if recipient.creator == user or user.is_superuser %}
         <div class="py-5" style="background-color: #f8f8f6;">
             <div class="container">
                 <div class="row mb-0">

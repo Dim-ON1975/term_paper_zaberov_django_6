@@ -1,0 +1,69 @@
+[
+{
+  "model": "mailings.recipient",
+  "pk": 2,
+  "fields": {
+    "creator": [
+      "zaberov.dv@internet.ru"
+    ],
+    "message": [
+      4,
+      "От Наполеона к Жозефине",
+      "Не было дня, чтобы я не любил тебя; не было ночи, чтобы я не сжимал тебя в своих объятиях. Я не выпиваю и чашки чая, чтобы не проклинать свою гордость и амбиции, которые вынуж"
+    ],
+    "mailings": [
+      3,
+      "19",
+      "00",
+      "00",
+      8,
+      7,
+      "создана"
+    ],
+    "date_at": "2024-02-26T00:00:00Z",
+    "date_update": "2024-02-26T11:10:48.159Z",
+    "date_start": null,
+    "mailings_count": 0,
+    "recipients": [
+      "zaberov.dv@gmail.com",
+      "zaberova.en@gmail.com",
+      "zaberov.dv@internet.ru",
+      "kira.puh77@yandex.ru",
+      "zaberova.ad@gmail.com"
+    ]
+  }
+},
+{
+  "model": "mailings.recipient",
+  "pk": 4,
+  "fields": {
+    "creator": [
+      "zaberov.dv@internet.ru"
+    ],
+    "message": [
+      5,
+      "От Ваньки на деревню дедушке",
+      "Милый дедушка, Константин Макарыч! И пишу тебе письмо. Поздравляю вас с Рождеством и желаю тебе всего от господа бога. Нету у меня ни отца, ни маменьки, только ты у меня один"
+    ],
+    "mailings": [
+      8,
+      "23",
+      "06",
+      "00",
+      27,
+      0,
+      "завершена"
+    ],
+    "date_at": "2024-02-27T20:05:17.896Z",
+    "date_update": "2024-02-27T20:05:17.896Z",
+    "date_start": null,
+    "mailings_count": 0,
+    "recipients": [
+      "zaberov.dv@gmail.com",
+      "zaberova.sd@gmail.com",
+      "zaberov_dv@rambler.ru",
+      "zaberova.ad@gmail.com"
+    ]
+  }
+}
+]

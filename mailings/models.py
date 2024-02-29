@@ -35,12 +35,6 @@ class Mailing(models.Model):
         (28, 'один раз в месяц'),
     )
 
-    STATUS_CHOICES = (
-        ('завершена', 'завершена'),
-        ('создана', 'создана'),
-        ('запущена', 'запущена'),
-    )
-
     creator = models.ForeignKey(MODEL_USER, on_delete=models.CASCADE, verbose_name='владелец')
     mailing_hour = models.CharField(default='00', max_length=2, choices=str_time(24), verbose_name='часы')
     mailing_minute = models.CharField(default='00', max_length=2, choices=str_time(60), verbose_name='минуты')
@@ -48,11 +42,11 @@ class Mailing(models.Model):
     mailing_day = models.PositiveIntegerField(default=0, choices=DAY_CHOICES, **NULLABLE, verbose_name='день рассылки')
     mailing_frequency = models.PositiveIntegerField(choices=FREQUENCY_CHOICES,
                                                     verbose_name='периодичность')
-    mailing_status = models.CharField(max_length=9, default='создана', choices=STATUS_CHOICES, verbose_name='статус')
 
     def natural_key(self):
         """Для сериализации связанных данных"""
-        return self.pk, self.mailing_hour, self.mailing_minute, self.mailing_second, self.mailing_day, self.mailing_frequency, self.mailing_status
+        return (self.pk, self.mailing_hour, self.mailing_minute,
+                self.mailing_second, self.mailing_day, self.mailing_frequency)
 
     def __str__(self):
         return (f'старт: {self.mailing_day}-го, {self.mailing_hour}:{self.mailing_minute}:{self.mailing_second}, '
@@ -81,12 +75,23 @@ class Message(models.Model):
 
 
 class Recipient(models.Model):
+    STATUS_CHOICES = (
+        ('завершена', 'завершена'),
+        ('создана', 'создана'),
+        ('запущена', 'запущена'),
+    )
+
     creator = models.ForeignKey(MODEL_USER, on_delete=models.CASCADE, verbose_name='владелец')
     recipients = models.ManyToManyField('clients.Client', verbose_name='получатели', related_name='recipient')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='письмо')
     mailings = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='параметры')
     date_at = models.DateTimeField(auto_now_add=True, verbose_name='создана')
     date_update = models.DateTimeField(auto_now=True, verbose_name='изменена')
+    date_start = models.DateField(auto_now_add=False, **NULLABLE, verbose_name='начало')
+    mailings_count = models.PositiveIntegerField(default=0, verbose_name='количество')
+    mailing_status = models.CharField(max_length=9, default='создана', choices=STATUS_CHOICES, verbose_name='статус')
+    is_active = models.BooleanField(default=True, verbose_name='активна')
+
 
     def __str__(self):
         return f'{self.creator}, {self.message}, {self.mailings}'
