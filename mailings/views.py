@@ -77,7 +77,7 @@ class MailingCreateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, Cre
             # данные формы
             mailing_hour = form.cleaned_data['mailing_hour']
             mailing_minute = form.cleaned_data['mailing_minute']
-            mailing_second = form.cleaned_data['mailing_second']
+            mailing_second = "00"
             date_time_str = str((f'{current_year_number}-{current_month_number}-{mailing_day} '
                                  f'{mailing_hour}:{mailing_minute}:{mailing_second}'))
             mailing_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
@@ -132,7 +132,7 @@ class MailingUpdateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, Upd
             # данные формы
             mailing_hour = form.cleaned_data['mailing_hour']
             mailing_minute = form.cleaned_data['mailing_minute']
-            mailing_second = form.cleaned_data['mailing_second']
+            mailing_second = "00"
             date_time_str = str((f'{current_year_number}-{current_month_number}-{mailing_day} '
                                  f'{mailing_hour}:{mailing_minute}:{mailing_second}'))
             mailing_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
