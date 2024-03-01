@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from mailings import jobs
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('clients.urls')),
-    # path('mailings/', include('mailings.urls')),
+    path('mailings/', include('mailings.urls')),
     path('account/', include('account.urls')),
+    path('', include('logs.urls')),
+    path('blog/', include('blog.urls'))
 ]
 
 if settings.DEBUG:

@@ -1,14 +1,12 @@
 from account.models import User
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DeleteView, CreateView, View, UpdateView, DetailView
 
 from .forms import AuthenticationForm, UserRegisterForm, UserProfileForm
-from django.contrib.auth.decorators import login_required
 
-from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView, PasswordResetView, \
     PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from core.settings import LOGIN_REDIRECT_URL
@@ -16,7 +14,23 @@ from .services import send_email_for_verify
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.core.exceptions import ValidationError
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
+from core.settings import LOGIN_URL
+
+
+
+class DataMixin:
+    paginate_by = 5
+
+
+class RedirectPermissionRequiredMixin(PermissionRequiredMixin):
+    permission_required = None
+    login_url = reverse_lazy('clients:error403')
+
+    def handle_no_permission(self):
+        return redirect(self.get_login_url())
 
 
 class MyLoginView(LoginView):
@@ -41,13 +55,6 @@ class MyLoginView(LoginView):
 
     def form_invalid(self, form):
         return HttpResponse('Неверный логин')
-
-
-@login_required
-def dashboard(request):
-    return render(request,
-                  'account/dashboard.html',
-                  {'section': 'dashboard'})
 
 
 class RegisterView(CreateView):
@@ -150,3 +157,31 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "account/password_reset_complete.html"
+
+
+class UserListView(RedirectPermissionRequiredMixin, DataMixin, ListView):
+    model = User
+    permission_required = 'account.view_user'
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
+            queryset = queryset.order_by("-is_superuser", "-is_staff", "-is_active", "last_name", "first_name",
+                                         "email").distinct()
+        return queryset
+
+
+@login_required
+@user_passes_test(lambda u: lambda user_id: u == get_object_or_404(User, pk=user_id).user,
+                  login_url=LOGIN_URL)
+def toggle_activity(request, pk):
+    """ Активация/деактивация пользователей """
+    user_item = get_object_or_404(User, pk=pk)
+    if user_item.is_active:
+        user_item.is_active = False
+    else:
+        user_item.is_active = True
+
+    user_item.save()
+
+    return redirect(reverse('account:user_list'))

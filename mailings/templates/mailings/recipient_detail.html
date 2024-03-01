@@ -1,0 +1,48 @@
+{% extends 'clients/base.html' %}
+{% load catalog_tags %}
+
+{% block title %}Рассылка{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Информация о рассылке</h1>
+          </div>
+        </div>
+    </section>
+    {% if perms.mailings.view_recipient or recipient.creator == user %}
+        <div class="py-5 bg-light">
+            <div class="container">
+                <div class="row mb-0">
+                        <div class="col">
+                            <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                                <div class="card-body d-flex flex-column align-items-start">
+                                  <h3 class="mb-0 text-primary">{{ recipient.message.mail_title }}</h3>
+                                  <p>|
+                                      {% for recipient in object.recipients.all  %}
+                                        {{ recipient.email }} |
+                                      {% endfor %}
+                                  </p>
+                                  <h5> Начало рассылки:
+                                      {% if object.mailings.mailing_day == 0%}
+                                            от даты создания,
+                                      {% else %}
+                                            {{ object.mailings.mailing_day }}-го,
+                                      {% endif %}
+                                      {{ object.mailings.mailing_hour }}:{{ object.mailings.mailing_minute }}:{{ object.mailings.mailing_second }}, {{ object.mailings.mailing_frequency }} дн., {{ object.mailing_status }}
+                                  </h5>
+                                  <br>
+                                  <p class="card-text mb-auto">{{ recipient.message.mail_text }}</p>
+                                  <br>
+                                  <a href="{% url 'mailings:recipient_list' %}">Вернуться назад</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include 'clients/includes/inc_base_cap.html' %}
+    {% endif %}
+{% endblock %}

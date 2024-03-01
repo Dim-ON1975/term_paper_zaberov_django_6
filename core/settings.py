@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+
+from celery.schedules import crontab
 from dotenv import load_dotenv, find_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,27 +43,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # celery
+    'django_extensions',
+    'django_celery_beat',
+
     # мои приложения
     'clients',
     'account',
-    # 'mailings',
+    'mailings',
+    'logs',
+    'blog',
 
     # формы бутстрап
     'crispy_bootstrap5',
     'crispy_forms',
-    # функции планирования
-    'django_apscheduler',
+
 ]
 
 # для django_crispy_forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-# для django_apscheduler
-# Строка формата для отображения временных меток времени выполнения.
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
-# Максимальное время выполнения, разрешённое для заданий.
-APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Секунд
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -154,9 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # ЭЛЕКТРОННАЯ ПОЧТА
-
 
 
 # настройки работы почтой
@@ -191,3 +190,23 @@ if CACHE_ENABLED:
             "TIMEOUT": 60
         }
     }
+
+# CELERY
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_URL = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
+CElERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "mailings.tasks.send_process",
+        "schedule": crontab(minute="*/1"),
+    },
+}
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'

@@ -1,0 +1,60 @@
+{% extends 'clients/base.html' %}
+{% load catalog_tags %}
+
+{% block title %}Блог{% endblock %}
+
+{% block context %}
+<main>
+
+  <section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">БЛОГ</h1>
+        <p class="lead text-body-secondary">Наши публикации</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="py-5 bg-light">
+    <div class="container">
+       {% for object in object_list %}
+        <div class="row mb-2">
+            <div class="col">
+                    <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                          <div class="card-img-right" style="width: 250px; margin: 20px;">
+                            <img src="{{ object.img|mediapath }}" class="img-fluid" alt="{{ object.title }}" style="object-fit: contain; width: 100%; height: 100%;">
+                          </div>
+                          <div class="card-body d-flex flex-column align-items-start">
+                          <strong class="d-inline-block mb-2 text-secondary">Автор: {{ object.creator.last_name }} {{ object.creator.first_name }}</strong>
+                          <h4 class="mb-0 text-dark"><a class="link-dark link-offset-1 link-offset-1-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'blog:blog_detail' object.pk %}">{{ object.title }}</a></h4>
+                          <div class="mb-1 text-muted" style="font-size: 12px;">{{ object.slug }}</div>
+                          <div class="mb-3 text-muted">{{ object.published_at|date:'d.m.Y H:i:s' }}, просмотров: {{ object.view_count }}</div>
+
+                          <p class="card-text">{{ object.body|slice:200 }}...</p>
+                          {% if object.creator == user or user.is_superuser %}
+                              <div class="btn-group" style="float: left; margin-top: 5px; margin-bottom: 0;">
+                                  <a class="btn btn-sm btn-outline-secondary" href="{% url 'blog:blog_update' object.pk %}" role="button">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16" style="vertical-align: -.35em;"><title>Изменить</title>
+                                          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                      </svg>
+                                  </a>
+                                  <a class="btn btn-sm btn-outline-secondary" href="{% url 'blog:blog_delete' object.pk %}" role="button">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16" style="vertical-align: -.35em;" ><title>Удалить</title>
+                                          <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                      </svg>
+                                  </a>
+                              </div>
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+       </div>
+       {% endfor %}
+       <!-- Пагинация -->
+       {% include 'clients/includes/inc_base_paginator.html' %}
+       <!-- /Пагинация -->
+    </div>
+  </div>
+</main>
+{% endblock %}

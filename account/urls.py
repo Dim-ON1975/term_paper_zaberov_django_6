@@ -3,7 +3,7 @@ from . import views
 from .apps import AccountConfig
 from .views import RegisterView, ProfileUpdateView, ProfileDetailView, UserDeleteView, EmailVerify, MyLoginView, \
     MyPasswordChangeDoneView, MyPasswordChangeView, MyPasswordResetView, MyPasswordResetDoneView, \
-    MyPasswordResetConfirmView, MyPasswordResetCompleteView
+    MyPasswordResetConfirmView, MyPasswordResetCompleteView, UserListView, toggle_activity
 from django.contrib.auth.views import TemplateView, LogoutView
 
 app_name = AccountConfig.name
@@ -39,4 +39,8 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('password-reset/complete/', MyPasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
+    # Список пользователей
+    path('users/', UserListView.as_view(), name='user_list'),
+    # активация/деактивация пользователя
+    path('activity/<int:pk>', toggle_activity, name='activity')
 ]

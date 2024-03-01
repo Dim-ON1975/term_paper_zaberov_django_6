@@ -1,0 +1,98 @@
+[
+{
+    "model": "clients.client",
+    "pk": 1,
+    "fields": {
+        "creator": 1,
+        "last_name": "Кузякин",
+        "first_name": "Вениамин",
+        "middle_name": "Иванович",
+        "email": "zaberov.dv@gmail.com",
+        "comment": "Лучший клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 2,
+    "fields": {
+        "creator": 2,
+        "last_name": "Петров",
+        "first_name": "Пётр",
+        "middle_name": "Петрович",
+        "email": "zaberov.dv@yandex.ru",
+        "comment": "Клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 3,
+    "fields": {
+        "creator": 1,
+        "last_name": "Сидоров",
+        "first_name": "Сидор",
+        "middle_name": "Сидорович",
+        "email": "zaberov_dv@rambler.ru",
+        "comment": "Основной клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 4,
+    "fields": {
+        "creator": 1,
+        "last_name": "Семёнов",
+        "first_name": "Семён",
+        "middle_name": "Семёнович",
+        "email": "kira.puh75@yandex.ru",
+        "comment": "Обычный клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 5,
+    "fields": {
+        "creator": 2,
+        "last_name": "Фёдоров",
+        "first_name": "Фёдор",
+        "middle_name": "Фёдорович",
+        "email": "zaberova.ad@gmail.com",
+        "comment": "Клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 6,
+    "fields": {
+        "creator": 2,
+        "last_name": "Проскурякова",
+        "first_name": "Агафья",
+        "middle_name": "Ильинична",
+        "email": "zaberova.sd@gmail.com",
+        "comment": "Свой человек"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 7,
+    "fields": {
+        "creator": 3,
+        "last_name": "Парамонова",
+        "first_name": "Светлана",
+        "middle_name": "Юрьевна",
+        "email": "zaberova.en@gmail.com",
+        "comment": "Клиент"
+    }
+},
+{
+    "model": "clients.client",
+    "pk": 8,
+    "fields": {
+        "creator": 3,
+        "last_name": "Плужникова",
+        "first_name": "Валентина",
+        "middle_name": "Петровна",
+        "email": "zaberov.dv@internet.ru",
+        "comment": "Клиент"
+    }
+}
+]

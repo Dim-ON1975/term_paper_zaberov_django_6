@@ -1,14 +1,20 @@
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
+MODEL_USER = 'account.User'
 
 
 class Client(models.Model):
+    creator = models.ForeignKey(MODEL_USER, default=1, on_delete=models.CASCADE, verbose_name='владелец')
     last_name = models.CharField(max_length=20, verbose_name='фамилия')
     first_name = models.CharField(max_length=20, verbose_name='имя')
     middle_name = models.CharField(max_length=20, **NULLABLE, verbose_name='отчество')
     email = models.EmailField(verbose_name='электронная почта')
     comment = models.CharField(max_length=200, **NULLABLE, verbose_name='комментарий')
+
+    def natural_key(self):
+        """Для сериализации связанных данных"""
+        return self.email
 
     def __str__(self):
         if self.middle_name:
@@ -22,19 +28,3 @@ class Client(models.Model):
         verbose_name = 'клиент'
         verbose_name_plural = 'клиенты'
         ordering = ('last_name', 'first_name',)
-
-# class Recipient(models.Model):
-#     creator = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='владелец')
-#     recipients = models.ManyToManyField(Client, verbose_name='получатель')
-#
-#     class Meta:
-#         verbose_name = 'получатель'
-#         verbose_name_plural = 'получатели'
-#
-#
-# class Message(models.Model):
-#     creator = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='владелец')
-#
-#
-# class Logs(models.Model):
-#     mailings = models.ForeignKey(Mailings, on_delete=models.CASCADE, verbose_name='рассылка')

@@ -1,0 +1,75 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Отчёт{% endblock %}
+
+{% block context %}
+<main>
+  <section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-middle">Отчёт о рассылках</h1>
+        <p class="lead text-body-secondary">Логи рассылок</p>
+      </div>
+    </div>
+  </section>
+    {% if request.user.is_authenticated %}
+          <div class="py-5" style="background-color: #f8f8f6;">
+            <div class="container">
+                <div class="row text-center">
+                <div class="col-lg-12 col-md-8 mx-auto">
+                        <div class="card mb-2 box-shadow">
+                            <div class="card-body">
+                                <table class="table table-hover mb-0 table-bordered" style="vertical-align: middle;">
+                                    <thead>
+                                            <tr>
+                                                <th style="width: 15%">Отправитель</th>
+                                                <th style="width: 25%">Получатели</th>
+                                                <th style="width: 10%">Тема письма</th>
+                                                <th style="width: 20%">Параметры</th>
+                                                <th>Статус</th>
+                                                <th style="width: 15%">Дата и время попытки</th>
+                                                <th style="width: 15%">Результат</th>
+                                            </tr>
+                                        </thead>
+                                    {% for object in object_list %}
+                                        <tr class="border-top">
+                                            <td class="text-start">
+                                                {{ object.recipient.creator.last_name }} {{ object.recipient.creator.first_name|slice:1 }}.<br>({{ object.recipient.creator }})
+                                            </td>
+                                            <td class="text-start">
+                                                {% for recipient in object.recipient.recipients.all  %}
+                                                    {{ recipient.last_name }} {{ recipient.first_name|slice:1 }}.: {{ recipient.email }}<br>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {{ object.recipient.message.mail_title }}
+                                            </td>
+                                            <td>
+                                                {{ object.recipient.mailings }}
+                                            </td>
+                                            <td>
+                                                {{ object.recipient.mailing_status }}
+                                            </td>
+                                            <td>
+                                                {{ object.mailing_started|date:"d.m.Y (H:m:s)" }}
+                                            </td>
+                                            <td>
+                                                {{ object.status_attempt }}<br>({{ object.server_response }})
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                </div>
+            </div>
+               <!-- Пагинация -->
+               {% include 'clients/includes/inc_base_paginator.html' %}
+               <!-- /Пагинация -->
+            </div>
+          </div>
+    {% else %}
+        {% include 'clients/includes/inc_base_cap.html' %}
+    {% endif %}
+</main>
+{% endblock %}

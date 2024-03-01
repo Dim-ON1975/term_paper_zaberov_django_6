@@ -1,4 +1,5 @@
 {% extends 'clients/base.html' %}
+{% load catalog_tags %}
 
 {% block title %}Домашняя страница{% endblock %}
 
@@ -7,7 +8,7 @@
   <section class="py-0 text-center container">
     <div class="row py-lg-2">
       <div class="col mx-auto">
-        <h1 class="fw-middle">Домашняя страница</h1>
+        <h1 class="fw-middle" style="color: #ec6f0e;"><b>ЛИТЕРАТУРНАЯ ГОСТИНАЯ</b></h1>
         <p class="lead text-body-secondary">Добро пожаловать на наш сайт</p>
         {% if request.user.is_authenticated %}
         {% else %}
@@ -17,12 +18,60 @@
       </div>
     </div>
   </section>
-
   <div class="py-5" style="background-color: #f8f8f6;">
     <div class="container">
-        <div class="row text-center">
-            <p>Это главная страница</p>
+        <div class="row mb-2">
+            <div class="col-md-4">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                  <svg  xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-envelope-at mx-auto" viewBox="0 0 16 16">
+                      <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+                      <path d="M14.247 14.269c1.01 0 1.587-.857 1.587-2.025v-.21C15.834 10.43 14.64 9 12.52 9h-.035C10.42 9 9 10.36 9 12.432v.214C9 14.82 10.438 16 12.358 16h.044c.594 0 1.018-.074 1.237-.175v-.73c-.245.11-.673.18-1.18.18h-.044c-1.334 0-2.571-.788-2.571-2.655v-.157c0-1.657 1.058-2.724 2.64-2.724h.04c1.535 0 2.484 1.05 2.484 2.326v.118c0 .975-.324 1.39-.639 1.39-.232 0-.41-.148-.41-.42v-2.19h-.906v.569h-.03c-.084-.298-.368-.63-.954-.63-.778 0-1.259.555-1.259 1.4v.528c0 .892.49 1.434 1.26 1.434.471 0 .896-.227 1.014-.643h.043c.118.42.617.648 1.12.648Zm-2.453-1.588v-.227c0-.546.227-.791.573-.791.297 0 .572.192.572.708v.367c0 .573-.253.744-.564.744-.354 0-.581-.215-.581-.8Z"/>
+                  </svg>
+                  <h5 class="mb-0 mx-auto">Всего рассылок: {{ mailings_all }}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-envelope-arrow-up mx-auto" viewBox="0 0 16 16">
+                      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4.5a.5.5 0 0 1-1 0V5.383l-7 4.2-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h5.5a.5.5 0 0 1 0 1H2a2 2 0 0 1-2-1.99V4Zm1 7.105 4.708-2.897L1 5.383v5.722ZM1 4v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1Z"/>
+                      <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.354-5.354 1.25 1.25a.5.5 0 0 1-.708.708L13 12.207V14a.5.5 0 0 1-1 0v-1.717l-.28.305a.5.5 0 0 1-.737-.676l1.149-1.25a.5.5 0 0 1 .722-.016Z"/>
+                  </svg>
+                  <h5 class="mb-0 mx-auto">Активных рассылок: {{ mailings_is_active }}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-people mx-auto" viewBox="0 0 16 16">
+                      <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+                    </svg>
+                  <h5 class="mb-0 mx-auto">Уникальных клиентов: {{ clients_distinct }}</h5>
+                </div>
+              </div>
+            </div>
         </div>
+        {% for object in posts %}
+            <div class="row mb-2">
+                <div class="col">
+                    <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                          <div class="card-img-right" style="width: 145px; margin: 20px;">
+                            <img src="{{ object.img|mediapath }}" class="img-fluid" alt="{{ object.title }}" style="object-fit: contain; width: 100%; height: 100%;">
+                          </div>
+                          <div class="card-body d-flex flex-column align-items-start">
+                              <strong class="d-inline-block mb-2 text-secondary">Автор: {{ object.creator.last_name }} {{ object.creator.first_name }}</strong>
+                              <h4 class="mb-0 text-dark"><a class="link-dark link-offset-1 link-offset-1-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'blog:blog_detail' object.pk %}">{{ object.title }}</a></h4>
+                              <div class="mb-1 text-muted" style="font-size: 12px;">{{ object.slug }}</div>
+                              <div class="mb-3 text-muted">{{ object.published_at|date:'d.m.Y H:i:s' }}, просмотров: {{ object.view_count }}</div>
+                              <p class="card-text">{{ object.body|slice:200 }}...</p>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
   </div>
 </main>

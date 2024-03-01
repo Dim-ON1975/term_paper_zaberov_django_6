@@ -1,0 +1,36 @@
+{% extends 'clients/base.html' %}
+
+{% block title %}Удаление письма{% endblock %}
+
+{% block context %}
+    <section class="py-0 text-center container">
+        <div class="row py-lg-2">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-middle">Удаление письма</h1>
+            <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
+          </div>
+        </div>
+    </section>
+    {% if message.creator == user or user.is_superuser %}
+        <div class="py-5" style="background-color: #f8f8f6;">
+            <div class="container">
+                <div class="row mb-0">
+                        <div class="col">
+                            <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                                <div class="card-body d-flex flex-column align-items-start">
+                                  <h3 class="mb-0 text-dark">Хотите удалить письмо &#171;<b>{{ object.mail_title }}:</b> &#171;{{ object.mail_text|slice:30 }}...&#187;?</h3>
+                                  <form method="post" style="margin-top: 10px;">
+                                      {% csrf_token %}
+                                      <button type="submit"  class="btn btn-danger">Удалить</button>
+                                      <a class="btn btn btn-success" href="{% url 'mailings:message_list' %}">Отмена</a>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include 'clients/includes/inc_base_cap.html' %}
+    {% endif %}
+{% endblock %}

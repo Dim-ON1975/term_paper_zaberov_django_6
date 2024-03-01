@@ -1,0 +1,112 @@
+[
+{
+    "model": "logs.logs",
+    "pk": 2,
+    "fields": {
+        "recipient": 4,
+        "mailing_started": "2024-02-27T20:06:22.299Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 3,
+    "fields": {
+        "recipient": 5,
+        "mailing_started": "2024-02-28T12:39:23.130Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 4,
+    "fields": {
+        "recipient": 5,
+        "mailing_started": "2024-02-28T14:14:23.023Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 5,
+    "fields": {
+        "recipient": 5,
+        "mailing_started": "2024-02-28T14:20:22.908Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 6,
+    "fields": {
+        "recipient": 5,
+        "mailing_started": "2024-02-28T14:30:23.273Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 7,
+    "fields": {
+        "recipient": 2,
+        "mailing_started": "2024-02-28T15:00:22.710Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 8,
+    "fields": {
+        "recipient": 6,
+        "mailing_started": "2024-02-28T15:05:22.234Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 9,
+    "fields": {
+        "recipient": 7,
+        "mailing_started": "2024-02-28T15:15:22.673Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 10,
+    "fields": {
+        "recipient": 8,
+        "mailing_started": "2024-02-28T17:03:22.630Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 11,
+    "fields": {
+        "recipient": 10,
+        "mailing_started": "2024-02-28T18:04:23.276Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+},
+{
+    "model": "logs.logs",
+    "pk": 12,
+    "fields": {
+        "recipient": 12,
+        "mailing_started": "2024-03-01T10:15:23.204Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
+}
+]

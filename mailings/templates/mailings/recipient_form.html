@@ -1,0 +1,52 @@
+{% extends 'clients/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if object %}
+        Редактирование рассылки
+    {% else %}
+        Добавление рассылки
+    {% endif %}
+{% endblock %}
+
+{% block context %}
+    {% if perms.mailings.add_recipient or perms.mailings.change_recipient or recipient.creator == user %}
+        <section class="py-0 text-center container">
+            <div class="row py-lg-2">
+              <div class="col-lg-6 col-md-8 mx-auto">
+                {% if object %}
+                  <h1 class="fw-light">Редактирование рассылки</h1>
+                  <p class="lead text-body-secondary">Измените данные о рассылке при помощи формы</p>
+                {% else %}
+                  <h1 class="fw-light">Добавление рассылки</h1>
+                  <p class="lead text-body-secondary">Добавьте новую рассылку при помощи формы</p>
+                {% endif %}
+              </div>
+            </div>
+        </section>
+        <div class="py-5 bg-light">
+            <div class="container" style="width: 40%;">
+                <form action="" method="post" enctype="multipart/form-data" class="mb-3">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="form-actions">
+                        <a href="{% url 'mailings:recipient_list' %}" class="btn btn-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16" style="vertical-align: -.15em;">
+                              <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+                              <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
+                            </svg>
+                            Отменить
+                        </a>
+                        <button type="submit"  class="btn btn-success">
+                            {% if object %}
+                                Сохранить
+                            {% else %}
+                                Создать
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

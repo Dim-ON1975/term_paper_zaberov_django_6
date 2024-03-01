@@ -3,10 +3,10 @@
 <header class="py-3 border-bottom">
     <div class="container d-flex flex-wrap justify-content-center">
       <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="#ec6f0e" class="bi me-2" viewBox="0 0 16 16">
-          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="#ec6f0e" class="bi bi-book-half" viewBox="0 0 16 16">
+          <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
         </svg>
-        <span class="fs-4" style="color: #2e5e45; font-weight: bold;">Мой сайт</span>
+        <span class="fs-4" style="color: #2e5e45; font-weight: bold;">Литературная гостиная</span>
       </a>
       <div class="d-flex align-items-center">
         <form class="w-100 me-3">
@@ -37,24 +37,75 @@
     <div class="container d-flex flex-wrap">
       <ul class="nav me-auto">
         <li class="nav-item"><a href="{% url 'clients:home' %}" class="nav-link link-dark px-2 active" aria-current="page">Главная</a></li>
-            {% if request.user.is_authenticated %}
+            {% if perms.clients.view_client or user.is_superuser %}
                 <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Клиенты</a>
                       <ul class="dropdown-menu" aria-labelledby="dropdown01">
                         <li><a class="dropdown-item" href="{% url 'clients:client_list' %}">Список клиентов</a></li>
-                        <li><a class="dropdown-item" href="{% url 'clients:client_create' %}">Добавить клиента</a></li>
-                      </ul>
-                </li>
-                <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                        <li><a class="dropdown-item" href="#">Список рассылок</a></li>
-                        <li><a class="dropdown-item" href="#">Добавить рассылку</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Отчёт о рассылках</a></li>
+                        <li><a class="dropdown-item" href="{% url 'clients:client_create' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" style="vertical-align: -.25em;">
+                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            </svg>
+                            Добавить клиента
+                        </a></li>
                       </ul>
                 </li>
             {% endif %}
+            {% if perms.account.view_user or user.is_superuser %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Пользователи</a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                            <li><a class="dropdown-item" href="{% url 'account:user_list' %}">Список пользователей</a></li>
+                      </ul>
+                </li>
+                {% endif %}
+                {% if perms.mailings.view_recipient or user.is_superuser %}
+                    <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Рассылки</a>
+                          <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                            <li><a class="dropdown-item" href="{% url 'mailings:recipient_list' %}">Список рассылок</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mailings:recipient_create' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" style="vertical-align: -.25em;">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                                Добавить рассылку
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'mailings:mailing_list' %}">Список параметров рассылки</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mailings:mailing_create' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" style="vertical-align: -.25em;">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                                Добавить параметр рассылки
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'mailings:message_list' %}">Список писем</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mailings:message_create' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" style="vertical-align: -.25em;">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                                Добавить письмо
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logs:logs_list' %}">Отчёт о рассылках</a></li>
+                          </ul>
+                    </li>
+            {% endif %}
+        <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle nav-link link-dark px-2 active" href="#" id="dropdown04" data-bs-toggle="dropdown" aria-expanded="false">Блог</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdown04">
+                <li><a class="dropdown-item" href="{% url 'blog:blog_view' %}">Посты</a></li>
+                {% if user.is_authenticated and perms.blog.add_post or user.is_superuser %}
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'blog:blog_create' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16" style="vertical-align: -.25em;">
+                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                        </svg>
+                        Добавить пост
+                    </a></li>
+                {% endif %}
+              </ul>
+        </li>
         <li class="nav-item"><a href="#" class="nav-link link-dark px-2">О нас</a></li>
         <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Контакты</a></li>
       </ul>

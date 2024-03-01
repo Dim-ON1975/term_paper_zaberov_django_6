@@ -1,0 +1,34 @@
+{% extends 'clients/base.html' %}
+{% load catalog_tags %}
+
+{% block title %}Пост{% endblock %}
+
+{% block context %}
+<section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col-lg-12 col-md-8 mx-auto">
+        <h1 class="fw-light">{{ object.title }}</h1>
+      </div>
+    </div>
+</section>
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-0">
+                <div class="col">
+                    <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                        <img src="{{ object.img|mediapath }}" class="card-img-right flex-auto d-none d-md-block" alt="{{ object.name }}" style="width: auto; max-height: 300px; padding: 10px">
+                        <div class="card-body d-flex flex-column align-items-start">
+                          <strong class="d-inline-block mb-2 text-primary">Автор: {{ object.creator.last_name }} {{ object.creator.first_name }}</strong>
+                          <div class="mb-1 text-muted">{{ object.published_at|date:'d.m.Y H:i:s' }}</div>
+                          <br>
+                          <p class="card-text mb-auto">{{ object.body }}</p>
+                          <br>
+                          <div class="mb-1 text-muted">Просмотров: {{ object.view_count }}</div>
+                          <a href="{% url 'blog:blog_view' %}">К списку постов</a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

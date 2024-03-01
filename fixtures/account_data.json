@@ -1,21 +1,21 @@
 [
 {
     "model": "account.user",
-    "pk": 2,
+    "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$600000$kBpT0UQj5bmicdJLlXxOrU$R51AZdRGzkB040tJ/iDBJx/mVL4SCQPZDbmn5Rtff64=",
-        "last_login": "2024-02-24T14:47:17.191Z",
+        "password": "pbkdf2_sha256$600000$1xgta8xQchjsCnRPXvbAHA$BWhiInwA+nC/Xz7qRYVCP7uM/geEb0VVbKiApu3pRzI=",
+        "last_login": "2024-03-01T15:37:24.462Z",
         "is_superuser": true,
         "first_name": "Дмитрий",
         "last_name": "Заберов",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2024-02-24T11:02:22Z",
+        "date_joined": "2024-02-25T13:07:27Z",
         "email": "zaberov.dv@internet.ru",
         "email_verify": true,
         "date_of_birth": "1975-07-18",
-        "avatar": "users/2024/02/24/1662642122_5-kartinkin-net.jpg",
-        "phone": "+79198784504",
+        "avatar": "users/2024/02/25/1662642122_5-kartinkin-net.jpg",
+        "phone": "+7 951 258-25-54",
         "country": "Россия",
         "groups": [],
         "user_permissions": []
@@ -23,22 +23,95 @@
 },
 {
     "model": "account.user",
-    "pk": 7,
+    "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$600000$wXUainKNF9O050a20D0aB3$qFV+vUAGz6sdOyclMM5wJyeyVKuXh8bjh4C24pyOS/k=",
-        "last_login": "2024-02-24T14:06:45.025Z",
+        "password": "pbkdf2_sha256$600000$Ns6lGnIzwBYrXxmGwE63E0$zAZD8VMIE8M9qhyFwTEMmcig2gycA5utTeYwXCGCGlM=",
+        "last_login": "2024-03-01T13:21:31.762Z",
         "is_superuser": false,
         "first_name": "Иван",
         "last_name": "Иванов",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2024-02-24T13:03:29.435Z",
+        "date_joined": "2024-02-28T17:28:45Z",
         "email": "zaberov.dv@gmail.com",
         "email_verify": true,
-        "date_of_birth": null,
-        "avatar": "",
-        "phone": null,
+        "date_of_birth": "1993-09-15",
+        "avatar": "users/2024/02/28/1662642079_4-kartinkin-net.jpg",
+        "phone": "+7 598 125- 12-35",
         "country": "Россия",
+        "groups": [
+            1,
+            4
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$D4KHkZQXfulQ7FUwrZPQD2$NGnYhplB5gyvq4vUfkE/h/VPpFXwPkun1XpK9b0qOTg=",
+        "last_login": "2024-03-01T13:23:20.090Z",
+        "is_superuser": false,
+        "first_name": "Кирилл",
+        "last_name": "Пухляков",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-02-29T10:57:01Z",
+        "email": "kira.puh75@yandex.ru",
+        "email_verify": true,
+        "date_of_birth": "2008-06-15",
+        "avatar": "users/2024/02/29/1662642172_2-kartinkin-net-p-risunok-na-avatarku-dlya-muzhchin-instagra-2.jpg",
+        "phone": "+7 251 958-58-58",
+        "country": "Россия",
+        "groups": [
+            3
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$bQMuUboWuByCPvTHHjtkHI$klxKOkfbi8NpfkK5dTat1RViTN8Ykc1nhmVT0LWBGq8=",
+        "last_login": "2024-03-01T13:24:29.836Z",
+        "is_superuser": false,
+        "first_name": "Василиса",
+        "last_name": "Цыбулькина",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-03-01T12:28:13Z",
+        "email": "zaberov_dv@rambler.ru",
+        "email_verify": true,
+        "date_of_birth": "1985-01-19",
+        "avatar": "users/2024/03/01/2c699dff98ff95a510e27297da2c59ea.jpg",
+        "phone": "+7 259 258-14-15",
+        "country": "Белоруссия",
+        "groups": [
+            4
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "account.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$pQEGVmBtvBNKYO3XF6L5f0$HPXTi91VPMGmvyn1qA6gk8RWt6YNSU8yQnmNBpMmQ58=",
+        "last_login": "2024-03-01T13:30:36.800Z",
+        "is_superuser": false,
+        "first_name": "Сергей",
+        "last_name": "Неважно",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-03-01T13:30:16.007Z",
+        "email": "nevajno.dmitri@yandex.ru",
+        "email_verify": true,
+        "date_of_birth": "1977-06-25",
+        "avatar": "users/2024/03/01/Аватарки-мужские-картинки-014.jpg",
+        "phone": "+7 584 258-12-23",
+        "country": "Казахстан",
         "groups": [],
         "user_permissions": []
     }
