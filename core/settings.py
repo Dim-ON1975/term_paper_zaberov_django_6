@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'account',
     'mailings',
     'logs',
+    'blog',
 
     # формы бутстрап
     'crispy_bootstrap5',

@@ -120,6 +120,18 @@
     }
 },
 {
+    "model": "mailings.mailing",
+    "pk": 30,
+    "fields": {
+        "creator": 3,
+        "mailing_hour": "13",
+        "mailing_minute": "15",
+        "mailing_second": "00",
+        "mailing_day": 8,
+        "mailing_frequency": 7
+    }
+},
+{
     "model": "mailings.message",
     "pk": 1,
     "fields": {
@@ -384,6 +396,27 @@
             7,
             8,
             4
+        ]
+    }
+},
+{
+    "model": "mailings.recipient",
+    "pk": 12,
+    "fields": {
+        "creator": 3,
+        "message": 9,
+        "mailings": 30,
+        "date_at": "2024-03-01T10:14:33.113Z",
+        "date_update": "2024-03-01T10:14:33.113Z",
+        "date_start": "2024-03-01",
+        "mailings_count": 1,
+        "mailing_status": "запущена",
+        "is_active": true,
+        "recipients": [
+            1,
+            2,
+            4,
+            5
         ]
     }
 }

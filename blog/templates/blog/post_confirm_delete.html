@@ -1,0 +1,36 @@
+{% extends 'clients/base.html' %}
+{% load catalog_tags %}
+
+{% block title %}Удаление поста{% endblock %}
+
+{% block context %}
+<section class="py-0 text-center container">
+    <div class="row py-lg-2">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Удаление поста</h1>
+        <p class="lead text-body-secondary">Подтвердите или отмените удаление.<br>После удаления восстановить данные невозможно!</p>
+      </div>
+    </div>
+</section>
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-0">
+                <div class="col">
+                    <div class="card flex-md-row mb-0 box-shadow h-md-250">
+                        <img src="{{ object.img|mediapath }}" class="card-img-right flex-auto d-none d-md-block" alt="{{ post.title }}" style="width: auto; max-height: 180px; padding: 10px">
+                        <div class="card-body d-flex flex-column align-items-start">
+                          <strong class="d-inline-block mb-2 text-primary">Автор неизвестен</strong>
+                          <h3 class="mb-0 text-dark">Хотите удалить пост "{{ object.title }}"?</h3>
+                          <div class="mb-1 text-muted">Опубликован {{ post.published_at|date:'d.m.Y H:i:s' }}</div>
+                          <form method="post" style="margin-top: 10px;">
+                              {% csrf_token %}
+                              <button type="submit"  class="btn btn-danger">Удалить</button>
+                              <a class="btn btn btn-success" href="{% url 'blog:blog_view' %}">Отмена</a>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

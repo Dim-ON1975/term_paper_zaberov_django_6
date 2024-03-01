@@ -4,8 +4,8 @@
     "pk": 1,
     "fields": {
         "creator": 1,
-        "last_name": "Иванов",
-        "first_name": "Иван",
+        "last_name": "Кузякин",
+        "first_name": "Вениамин",
         "middle_name": "Иванович",
         "email": "zaberov.dv@gmail.com",
         "comment": "Лучший клиент"

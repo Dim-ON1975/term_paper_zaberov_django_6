@@ -25,7 +25,8 @@ urlpatterns = [
     path('', include('clients.urls')),
     path('mailings/', include('mailings.urls')),
     path('account/', include('account.urls')),
-    # path('logs/', include('logs.urls')),
+    path('', include('logs.urls')),
+    path('blog/', include('blog.urls'))
 ]
 
 if settings.DEBUG:

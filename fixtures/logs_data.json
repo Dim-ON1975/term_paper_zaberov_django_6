@@ -98,5 +98,15 @@
         "status_attempt": 200,
         "server_response": "OK"
     }
+},
+{
+    "model": "logs.logs",
+    "pk": 12,
+    "fields": {
+        "recipient": 12,
+        "mailing_started": "2024-03-01T10:15:23.204Z",
+        "status_attempt": 200,
+        "server_response": "OK"
+    }
 }
 ]

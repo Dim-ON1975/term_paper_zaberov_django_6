@@ -1,21 +1,16 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy, reverse
 
+
 from blog.models import Post
-from clients.models import Client
+from blog.services import sending_mail
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, redirect
+
+
+from datetime import datetime
+from django.shortcuts import redirect
 from django.http import Http404
-
-from mailings.models import Recipient
-from clients.services import get_posts_cache
-
-CLIENT_LIST = 'clients:client_list'
-
-
-class DataMixin:
-    paginate_by = 5
 
 
 class RedirectPermissionRequiredMixin(PermissionRequiredMixin):
@@ -26,29 +21,45 @@ class RedirectPermissionRequiredMixin(PermissionRequiredMixin):
         return redirect(self.get_login_url())
 
 
-class ClientListView(RedirectPermissionRequiredMixin, LoginRequiredMixin, DataMixin, ListView):
-    model = Client
-    permission_required = 'clients.view_client'
+class DataMixin:
+    paginate_by = 5
+
+
+class PostListView(DataMixin, ListView):
+    """ Список постов """
+    model = Post
 
     def get_queryset(self, *args, **kwargs):
+        """ Отображение только опубликованных постов (фильтрация по полю is_published """
         queryset = super().get_queryset(*args, **kwargs)
-        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
-            queryset = queryset.order_by("last_name", "first_name", "middle_name", ).distinct()
-        else:
-            queryset = queryset.order_by("last_name", "first_name", "middle_name", ).filter(
-                creator=self.request.user).distinct()
+        queryset = queryset.filter(is_published=True)
         return queryset
 
 
-class ClientCreateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, CreateView):
-    model = Client
-    fields = '__all__'
-    permission_required = 'clients.add_client'
-    success_url = reverse_lazy(CLIENT_LIST)
+class PostDetailView(DetailView):
+    """ Пост """
+    model = Post
+
+    def get_object(self, queryset=None):
+        """" Счётчик просмотров """
+        self.object = super().get_object(queryset)
+        self.object.view_count += 1
+        self.object.save()
+        if self.object.view_count == 100:
+            sending_mail(self.object.title, self.object.creator.email)
+        return self.object
+
+
+class PostCreateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    """ Форма создания поста """
+    model = Post
+    permission_required = 'blog.add_post'
+    fields = ('creator', 'title', 'body', 'img', 'published_at', 'is_published')
+    success_url = reverse_lazy('blog:blog_view')
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
+        if self.request.user.groups.filter(name='content_manager').exists() or self.request.user.is_superuser:
             return self.object
         if not self.request.user.is_staff:
             raise Http404
@@ -70,16 +81,15 @@ class ClientCreateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, Crea
         return kwargs
 
 
-class ClientUpdateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, UpdateView):
-    """ Редактирование товара """
-    model = Client
-    fields = '__all__'
-    permission_required = 'clients.change_client'
-    success_url = reverse_lazy(CLIENT_LIST)
+class PostUpdateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    """ Форма редактирования поста """
+    model = Post
+    permission_required = 'blog.change_post'
+    fields = ('creator', 'title', 'body', 'img', 'published_at', 'is_published')
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
+        if self.request.user.groups.filter(name='content_manager').exists() or self.request.user.is_superuser:
             return self.object
         if not self.request.user.is_staff:
             raise Http404
@@ -100,28 +110,16 @@ class ClientUpdateView(RedirectPermissionRequiredMixin, LoginRequiredMixin, Upda
         kwargs['initial'] = {'creator': self.request.user}
         return kwargs
 
+    def get_success_url(self):
+        """ Перенаправление на пост """
+        return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
 
-class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Client
-    success_url = reverse_lazy(CLIENT_LIST)
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """ Удаление поста """
+    model = Post
+    success_url = reverse_lazy('blog:blog_view')
 
     def test_func(self):
-        client = self.get_object()
-        return self.request.user == client.creator or self.request.user.is_superuser
-
-
-class HomeView(TemplateView):
-    template_name = 'clients/home.html'
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data['mailings_all'] = Recipient.objects.all().count()
-        context_data['mailings_is_active'] = Recipient.objects.filter(is_active=True).count()
-        context_data['clients_distinct'] = Client.objects.order_by("email").distinct().count()
-        # context_data['posts'] = Post.objects.order_by("-pk").distinct()[:3]
-        context_data['posts'] = get_posts_cache()
-        return context_data
-
-
-class Error403View(TemplateView):
-    template_name = 'clients/error_403.html'
+        post = self.get_object()
+        return self.request.user == post.creator or self.request.user.is_superuser
